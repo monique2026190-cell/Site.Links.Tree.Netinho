@@ -8,7 +8,7 @@ const router = createBrowserRouter([
     element: <Ebook />,
   },
   {
-    path: "/",
+    path: "*",
     element: <Links />,
   },
 ]);
