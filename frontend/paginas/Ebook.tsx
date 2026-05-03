@@ -1,5 +1,7 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { links } from '../app.links';
+import C1Image from '../assets/c1.jpg';
 
 const styles: { [key: string]: React.CSSProperties } = {
   container: {
@@ -11,6 +13,25 @@ const styles: { [key: string]: React.CSSProperties } = {
     background: 'linear-gradient(to right, #232526, #414345)',
     minHeight: '100vh',
     color: '#EAEAEA',
+    position: 'relative',
+  },
+  backButton: {
+    position: 'absolute',
+    top: '2rem',
+    left: '2rem',
+    width: '50px',
+    height: '50px',
+    borderRadius: '50%',
+    backgroundColor: '#33373a', 
+    color: 'white',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    fontSize: '24px',
+    border: '1px solid #444',
+    cursor: 'pointer',
+    boxShadow: '0 2px 10px rgba(0,0,0,0.3)',
+    transition: 'all 0.3s ease',
   },
   card: {
     display: 'flex',
@@ -52,6 +73,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     color: '#FFFFFF',
     lineHeight: 1.2,
     marginBottom: '0.5rem',
+    textShadow: '2px 2px 4px rgba(0, 0, 0, 0.3)',
   },
   author: {
     fontSize: '1.1rem',
@@ -95,24 +117,40 @@ const styles: { [key: string]: React.CSSProperties } = {
 };
 
 const Ebook: React.FC = () => {
-  const handleButtonHover = (e: React.MouseEvent<HTMLAnchorElement>, isHovering: boolean) => {
+  const navigate = useNavigate();
+
+  const handleBuyButtonHover = (e: React.MouseEvent<HTMLAnchorElement>, isHovering: boolean) => {
     e.currentTarget.style.transform = isHovering ? 'scale(1.05)' : 'scale(1)';
     e.currentTarget.style.boxShadow = isHovering ? '0 6px 20px rgba(40, 167, 69, 0.5)' : '0 4px 15px rgba(40, 167, 69, 0.4)';
   };
 
+  const handleBackButtonHover = (e: React.MouseEvent<HTMLButtonElement>, isHovering: boolean) => {
+    e.currentTarget.style.backgroundColor = isHovering ? '#28a745' : '#33373a';
+    e.currentTarget.style.transform = isHovering ? 'scale(1.1)' : 'scale(1)';
+  };
+
   return (
     <div style={styles.container}>
+      <button
+        style={styles.backButton}
+        onClick={() => navigate(-1)}
+        onMouseEnter={(e) => handleBackButtonHover(e, true)}
+        onMouseLeave={(e) => handleBackButtonHover(e, false)}
+      >
+        ←
+      </button>
       <div style={styles.card}>
         <div style={styles.imageColumn}>
-          <img 
-            src="https://i.pravatar.cc/400?img=3" 
-            alt="Capa do Ebook" 
-            style={styles.coverImage} 
+          <img
+            src={C1Image}
+            alt="Capa do Ebook"
+            style={styles.coverImage}
           />
         </div>
         <div style={styles.contentColumn}>
           <h1 style={styles.title}>
-            Como Montar<br />Seu Jardim.
+            <span style={{ color: '#FFFFFF', textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)' }}>Como Montar</span><br />
+            <span style={{ color: '#28a745', textShadow: '2px 2px 4px rgba(0, 0, 0, 0.3)' }}>Seu Jardim.</span>
           </h1>
           <p style={styles.author}>Aprenda com as dicas do netinho.</p>
           <p style={styles.description}>
@@ -120,15 +158,15 @@ const Ebook: React.FC = () => {
           </p>
           <div style={styles.ctaContainer}>
             <p style={styles.deliveryInfo}>✔️ Receba imediatamente por E-mail</p>
-            <a 
+            <a
               href={links.KIWIFY}
               style={styles.buyButton}
-              onMouseEnter={(e) => handleButtonHover(e, true)}
-              onMouseLeave={(e) => handleButtonHover(e, false)}
+              onMouseEnter={(e) => handleBuyButtonHover(e, true)}
+              onMouseLeave={(e) => handleBuyButtonHover(e, false)}
               target="_blank"
               rel="noopener noreferrer"
             >
-              Comprar por R$14,90
+              Adquirir Ebook R$14,90
             </a>
           </div>
         </div>
