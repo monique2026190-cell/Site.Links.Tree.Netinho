@@ -6,19 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const http_1 = __importDefault(require("http"));
 const path_1 = __importDefault(require("path"));
-const config_1 = require("./config");
 const meta_1 = __importDefault(require("./routes/meta"));
-// Função para verificar variáveis de ambiente obrigatórias
-const verificarVariaveisDeAmbiente = () => {
-    const requiredEnvVars = ['META_PIXEL_ID', 'META_PIXEL_TOKEN'];
-    const missingEnvVars = requiredEnvVars.filter(key => !config_1.config[key]);
-    if (missingEnvVars.length > 0) {
-        console.error(`Variáveis de ambiente faltando: ${missingEnvVars.join(', ')}`);
-        process.exit(1); // Encerra o processo se alguma variável estiver faltando
-    }
-};
-// Verifica as variáveis de ambiente antes de iniciar o servidor
-verificarVariaveisDeAmbiente();
 const app = (0, express_1.default)();
 // Middleware para processar JSON
 app.use(express_1.default.json());
@@ -31,7 +19,7 @@ app.get('*', (req, res) => {
     res.sendFile(path_1.default.join(__dirname, '../../frontend/dist/index.html'));
 });
 const server = http_1.default.createServer(app);
-const port = config_1.config.PORT;
+const port = process.env.PORT || 3000;
 server.listen(port, () => {
-    console.log(`Server running at http://localhost:${port}/`);
+    console.log(`Server running on port ${port}`);
 });

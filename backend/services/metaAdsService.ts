@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { config } from '../config';
 
 const API_VERSION = 'v19.0'; // Use a versão mais recente ou a que preferir
 const META_API_URL = `https://graph.facebook.com/${API_VERSION}`;
@@ -37,7 +36,7 @@ interface ServerEvent {
  * @param serverEvent - O objeto de evento preparado, pronto para ser enviado.
  */
 export const sendServerEvent = async (serverEvent: ServerEvent) => {
-    const { META_PIXEL_ID, META_PIXEL_TOKEN } = config;
+    const { META_PIXEL_ID, META_PIXEL_TOKEN } = process.env;
 
     if (!META_PIXEL_ID || !META_PIXEL_TOKEN) {
         // A verificação já acontece no server.ts, mas é uma boa prática ter aqui também

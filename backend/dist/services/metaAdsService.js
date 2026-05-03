@@ -14,7 +14,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.sendServerEvent = void 0;
 const axios_1 = __importDefault(require("axios"));
-const config_1 = require("../config");
 const API_VERSION = 'v19.0'; // Use a versão mais recente ou a que preferir
 const META_API_URL = `https://graph.facebook.com/${API_VERSION}`;
 /**
@@ -24,7 +23,7 @@ const META_API_URL = `https://graph.facebook.com/${API_VERSION}`;
  */
 const sendServerEvent = (serverEvent) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
-    const { META_PIXEL_ID, META_PIXEL_TOKEN } = config_1.config;
+    const { META_PIXEL_ID, META_PIXEL_TOKEN } = process.env;
     if (!META_PIXEL_ID || !META_PIXEL_TOKEN) {
         // A verificação já acontece no server.ts, mas é uma boa prática ter aqui também
         console.error('Pixel ID ou Token de Acesso do Meta não estão configurados.');

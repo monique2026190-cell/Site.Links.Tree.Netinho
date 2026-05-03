@@ -15,6 +15,34 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.handleEvent = void 0;
 const metaAdsService_1 = require("../services/metaAdsService");
 const crypto_1 = __importDefault(require("crypto"));
+const axios_1 = __importDefault(require("axios")); // Import axios
+// Função para obter localização do endereço IP
+function getLocationFromIp(ip) {
+    return __awaiter(this, void 0, void 0, function* () {
+        // Não buscar IPs de localhost ou inválidos
+        if (!ip || ip === '::1' || ip.startsWith('127.') || ip.startsWith('192.168.') || ip.startsWith('10.')) {
+            return {};
+        }
+        try {
+            // Usando um serviço de geolocalização de IP gratuito (substitua se tiver um preferido)
+            const response = yield axios_1.default.get(`http://ip-api.com/json/${ip}?fields=status,message,region,city`);
+            if (response.data.status === 'success') {
+                return {
+                    st: response.data.region, // Estado (Region)
+                    ct: response.data.city, // Cidade (City)
+                };
+            }
+            else {
+                console.warn(`Não foi possível geolocalizar o IP ${ip}: ${response.data.message}`);
+                return {};
+            }
+        }
+        catch (error) {
+            console.error(`Erro durante a geolocalização do IP ${ip}:`, error);
+            return {};
+        }
+    });
+}
 function hashData(data) {
     return crypto_1.default
         .createHash('sha256')
@@ -22,13 +50,16 @@ function hashData(data) {
         .digest('hex');
 }
 const handleEvent = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a, _b;
     const payload = req.body;
     if (!payload.eventName || !payload.eventSourceUrl) {
         return res.status(400).json({ message: 'eventName e eventSourceUrl são obrigatórios.' });
     }
     const ipHeader = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
     const ip = Array.isArray(ipHeader) ? ipHeader[0] : ipHeader === null || ipHeader === void 0 ? void 0 : ipHeader.split(',')[0].trim();
-    const userData = Object.assign(Object.assign({}, payload.userData), { client_ip_address: ip, client_user_agent: req.headers['user-agent'], fbp: payload.fbp, fbc: payload.fbc });
+    // Obter localização a partir do IP
+    const locationData = yield getLocationFromIp(ip || '');
+    const userData = Object.assign(Object.assign(Object.assign({}, payload.userData), { client_ip_address: ip, client_user_agent: req.headers['user-agent'], fbp: payload.fbp, fbc: payload.fbc, external_id: (_a = payload.userData) === null || _a === void 0 ? void 0 : _a.external_id, subscription_id: (_b = payload.userData) === null || _b === void 0 ? void 0 : _b.subscription_id }), locationData);
     if (userData.em && typeof userData.em === 'string') {
         userData.em = hashData(userData.em);
     }
@@ -44,6 +75,7 @@ const handleEvent = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         user_data: userData,
         custom_data: payload.customData,
     };
+    // Remover quaisquer campos user_data que sejam undefined ou null
     Object.keys(serverEvent.user_data).forEach(key => {
         if (serverEvent.user_data[key] === undefined || serverEvent.user_data[key] === null) {
             delete serverEvent.user_data[key];
