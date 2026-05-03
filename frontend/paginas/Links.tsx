@@ -36,7 +36,6 @@ const styles: { [key: string]: React.CSSProperties } = {
     height: '150px',
     borderRadius: '50%',
     marginBottom: '1rem',
-    border: '3px solid #EAEAEA',
     boxShadow: '0 4px 8px rgba(0,0,0,0.3)',
   },
   name: {
@@ -45,11 +44,15 @@ const styles: { [key: string]: React.CSSProperties } = {
     margin: 0,
   },
   subtitle: {
-    fontSize: '1.1rem',
-    color: '#D1D5DB',
-    marginBottom: '2rem',
-    fontWeight: '500',
-    letterSpacing: '0.5px',
+    fontSize: '1.2rem',
+    color: '#EAEAEA',
+    fontWeight: '600',
+    marginTop: '2rem',
+    marginBottom: '1rem',
+    paddingBottom: '0.75rem',
+    borderBottom: '1px solid #555',
+    width: '90%',
+    maxWidth: '680px',
   },
   linkList: {
     listStyle: 'none',
@@ -93,7 +96,7 @@ const Links: React.FC = () => {
     <div style={styles.container}>
       <img src={avatar} alt="Avatar" style={styles.avatar} />
       <h2 style={styles.name}>Netinho Branquinho</h2>
-      <p style={styles.subtitle}>Perfis Oficiais</p>
+      <p style={styles.subtitle}>Redes Sociais</p>
       <div style={styles.linkList}>
         {Object.entries(links)
         .filter(([key]) => key !== 'KIWIFY')

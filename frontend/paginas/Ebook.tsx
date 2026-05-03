@@ -22,7 +22,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     width: '50px',
     height: '50px',
     borderRadius: '50%',
-    backgroundColor: '#33373a', 
+    backgroundColor: '#33373a',
     color: 'white',
     display: 'flex',
     alignItems: 'center',
@@ -83,11 +83,24 @@ const styles: { [key: string]: React.CSSProperties } = {
     borderLeft: '3px solid #28a745',
     paddingLeft: '1rem',
   },
-  description: {
-    fontSize: '1.1rem',
-    lineHeight: 1.7,
+  checklist: {
+    listStyle: 'none',
+    padding: 0,
     marginBottom: '2rem',
+    textAlign: 'left',
+  },
+  checklistItem: {
+    fontSize: '1.1rem',
+    lineHeight: 1.6,
     color: '#EAEAEA',
+    marginBottom: '0.8rem',
+    display: 'flex',
+    alignItems: 'center',
+  },
+  checkIcon: {
+    color: '#28a745',
+    marginRight: '10px',
+    fontSize: '1.2rem',
   },
   ctaContainer: {
     backgroundColor: '#232526',
@@ -153,9 +166,12 @@ const Ebook: React.FC = () => {
             <span style={{ color: '#28a745', textShadow: '2px 2px 4px rgba(0, 0, 0, 0.3)' }}>Seu Jardim.</span>
           </h1>
           <p style={styles.author}>Aprenda com as dicas do netinho.</p>
-          <p style={styles.description}>
-            Ensinamentos completos para você criar e manter um jardim incrível, mesmo com pouco espaço ou experiência.
-          </p>
+          <ul style={styles.checklist}>
+    <li style={styles.checklistItem}><span style={styles.checkIcon}>✔️</span>Técnicas de jardinagem para iniciantes.</li>
+    <li style={styles.checklistItem}><span style={styles.checkIcon}>✔️</span>Como escolher as plantas certas para seu espaço.</li>
+    <li style={styles.checklistItem}><span style={styles.checkIcon}>✔️</span>Dicas de manutenção e cuidado com o solo.</li>
+    <li style={styles.checklistItem}><span style={styles.checkIcon}>✔️</span>Soluções para hortas em pequenos apartamentos.</li>
+</ul>
           <div style={styles.ctaContainer}>
             <p style={styles.deliveryInfo}>✔️ Receba imediatamente por E-mail</p>
             <a
