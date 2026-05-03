@@ -1,21 +1,18 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import {
   FaInstagram,
-  FaYoutube,
   FaTiktok,
   FaStore,
-  FaBook,
   FaVideo,
 } from 'react-icons/fa';
 import { links } from '../app.links';
 
-const iconComponents: { [key: string]: React.ElementType } = {
-  FaInstagram,
-  FaYoutube,
-  FaTiktok,
-  FaStore,
-  FaBook,
-  FaVideo,
+const iconMapping: { [key: string]: React.ElementType } = {
+  EBOOK: FaStore,
+  INSTAGRAM: FaInstagram,
+  TIKTOK: FaTiktok,
+  KWAI: FaVideo,
 };
 
 const styles: { [key: string]: React.CSSProperties } = {
@@ -57,7 +54,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     width: '100%',
     maxWidth: '680px',
   },
-  linkItem: {
+  link: {
     backgroundColor: '#1E1E1E',
     margin: '1rem 0',
     padding: '1.5rem',
@@ -65,14 +62,13 @@ const styles: { [key: string]: React.CSSProperties } = {
     boxShadow: '0 4px 8px rgba(0,0,0,0.3)',
     transition: 'transform 0.2s ease-in-out, boxShadow 0.2s ease-in-out',
     border: '1px solid #444',
-  },
-  link: {
     textDecoration: 'none',
     fontSize: '1.3rem',
     fontWeight: '600',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
+    color: '#EAEAEA',
   },
   icon: {
     marginRight: '10px',
@@ -80,12 +76,12 @@ const styles: { [key: string]: React.CSSProperties } = {
 };
 
 const Links: React.FC = () => {
-  const handleMouseEnter = (e: React.MouseEvent<HTMLLIElement>) => {
+  const handleMouseEnter = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.currentTarget.style.transform = 'scale(1.03)';
     e.currentTarget.style.boxShadow = '0 8px 16px rgba(0,0,0,0.4)';
   };
 
-  const handleMouseLeave = (e: React.MouseEvent<HTMLLIElement>) => {
+  const handleMouseLeave = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.currentTarget.style.transform = 'scale(1)';
     e.currentTarget.style.boxShadow = '0 4px 8px rgba(0,0,0,0.3)';
   };
@@ -95,28 +91,45 @@ const Links: React.FC = () => {
       <img src="https://i.pravatar.cc/150" alt="Avatar" style={styles.avatar} />
       <h2 style={styles.name}>Netinho Branquinho</h2>
       <p style={styles.subtitle}>Perfis Oficiais</p>
-      <ul style={styles.linkList}>
-        {links.map((link, index) => {
-          const IconComponent = iconComponents[link.icon];
-          return (
-            <li
+      <div style={styles.linkList}>
+        {Object.entries(links)
+        .filter(([key]) => key !== 'KIWIFY')
+        .map(([text, url], index) => {
+          const displayText = text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
+          const IconComponent = iconMapping[text.toUpperCase()];
+          const isInternalLink = url.startsWith('/');
+
+          const linkContent = (
+            <>
+              {IconComponent && <IconComponent style={styles.icon} />} {displayText}
+            </>
+          );
+
+          return isInternalLink ? (
+            <Link
               key={index}
-              style={styles.linkItem}
+              to={url}
+              style={styles.link}
               onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}
             >
-              <a
-                href={link.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{ ...styles.link, color: link.color }}
-              >
-                {IconComponent && <IconComponent style={styles.icon} />} {link.text}
-              </a>
-            </li>
+              {linkContent}
+            </Link>
+          ) : (
+            <a
+              key={index}
+              href={url}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={styles.link}
+              onMouseEnter={handleMouseEnter}
+              onMouseLeave={handleMouseLeave}
+            >
+              {linkContent}
+            </a>
           );
         })}
-      </ul>
+      </div>
     </div>
   );
 };
