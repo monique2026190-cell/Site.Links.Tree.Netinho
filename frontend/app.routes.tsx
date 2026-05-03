@@ -4,12 +4,12 @@ import Ebook from './paginas/Ebook';
 
 const router = createBrowserRouter([
   {
-    path: "/ebook",
-    element: <Ebook />,
-  },
-  {
     path: "*",
     element: <Links />,
+  },
+  {
+    path: "/ebook",
+    element: <Ebook />,
   },
 ]);
 
