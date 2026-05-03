@@ -5,6 +5,7 @@ import {
   FaTiktok,
   FaStore,
   FaVideo,
+  FaYoutube,
 } from 'react-icons/fa';
 import { links } from '../app.links';
 import avatar from '../assets/avatar.jpg';
@@ -14,6 +15,7 @@ const iconMapping: { [key: string]: React.ElementType } = {
   INSTAGRAM: FaInstagram,
   TIKTOK: FaTiktok,
   KWAI: FaVideo,
+  YOUTUBE: FaYoutube,
 };
 
 const styles: { [key: string]: React.CSSProperties } = {
