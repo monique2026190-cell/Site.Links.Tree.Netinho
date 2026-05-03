@@ -7,6 +7,7 @@ import {
   FaVideo,
 } from 'react-icons/fa';
 import { links } from '../app.links';
+import avatar from '../assets/avatar.jpg';
 
 const iconMapping: { [key: string]: React.ElementType } = {
   EBOOK: FaStore,
@@ -88,7 +89,7 @@ const Links: React.FC = () => {
 
   return (
     <div style={styles.container}>
-      <img src="https://i.pravatar.cc/150" alt="Avatar" style={styles.avatar} />
+      <img src={avatar} alt="Avatar" style={styles.avatar} />
       <h2 style={styles.name}>Netinho Branquinho</h2>
       <p style={styles.subtitle}>Perfis Oficiais</p>
       <div style={styles.linkList}>
